@@ -1,9 +1,8 @@
 package challenge1.coroutines
 
 import externalLegacyCodeNotUnderOurControl.PriceService
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.*
+
 
 /**
  * This example uses Kotlin coroutines.
@@ -16,7 +15,7 @@ fun main(args: Array<String>): Unit = runBlocking {
     val nrOfPrices = 10
 
     val jobs = List(nrOfPrices) {
-        async(CommonPool) {
+        async(Dispatchers.Default) {
             PriceService().price
         }
     }

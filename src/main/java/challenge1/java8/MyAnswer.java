@@ -26,8 +26,29 @@ public class MyAnswer {
         System.out.println("4. Price: " + future.join());
     }
 
+    private void runAsync2() {
+        System.out.println("1. 비동기 작업 시작 전");
+        CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+            System.out.println("3. 비동기 작업 실행 중 - " + Thread.currentThread().getName());
+            return new PriceService().getPrice();
+        });
+        CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("3. 비동기 작업 실행 중 - " + Thread.currentThread().getName());
+            return new PriceService().getPrice();
+        });
+        CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> {
+            System.out.println("3. 비동기 작업 실행 중 - " + Thread.currentThread().getName());
+            return new PriceService().getPrice();
+        });
+
+        //각기 새로운 워커쓰레드에 할당된다. 그런데 공통풀에 할당됨.
+        int price = future.join()  + future1.join()  + future2.join();
+
+        System.out.println("4. Price: " + price/3);
+    }
+
     public static void main(final String... args) {
-        new MyAnswer().runAsync();
+        new MyAnswer().runAsync2();
     }
 
 }
